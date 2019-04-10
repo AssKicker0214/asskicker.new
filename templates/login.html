@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>login</title>
+    <link href="/static/lib/font-awesome/all.css" rel="stylesheet">
+    <link href="/static/css/login.css" rel="stylesheet">
+    <script src="/static/lib/md5/md5.min.js"></script>
+    <script src="/static/lib/vue/vue.js"></script>
+
+</head>
+<body>
+<form id="form">
+    <label for="password" class="fas fa-user-lock"></label>
+    <input id="password" v-model="password" type="password" name="password" placeholder="Enter password..." autocomplete="new-password">
+    <button type="button" @click="test()" :disabled="password===''">Log in</button>
+
+    <!-- These two lines below are headache-->
+    <label for="username" style="display: none;"></label>
+    <input id="username" type="text" name="username" value="..." autocomplete="username" style="display: none;">
+</form>
+<script>
+    const goto = '{{ goto }}';
+
+    const control = new Vue({
+        el: "#form",
+        data: {
+            password: ""
+        },
+        methods: {
+            test: function () {
+                if (this.password === '') return;
+
+                const hashed = md5(this.password);
+                fetch('/test-login', {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Data-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        hashed: hashed
+                    })
+                }).then(res => {
+                    if (res.ok) return res.json();
+                }).then(j => {
+                    if (j['result'] === true) window.location = goto;
+                    else console.log("failure");
+                })
+            }
+        }
+
+    })
+
+    document.querySelector("#password").addEventListener('keyup', e => {
+        const evt = e || window.event;
+        if (evt.key === 'Enter') test();
+    });
+
+    function test(password) {
+
+    }
+</script>
+</body>
+</html>

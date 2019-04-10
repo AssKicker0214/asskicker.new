@@ -5,19 +5,23 @@ import json
 app = Flask(__name__)
 
 
-def require_login(func):
-    def decorator(*args, **kwargs):
+def require_login(original_function):
+    """
+    Interrupt the original function, check whether user has logged in,
+    if not, redirect to login page;
+    else, continue with the original_function
+    :param original_function: the function that would be interrupted
+    :return:
+    """
+    def wrapper(*args, **kwargs):
         token = request.cookies.get("token")
-
-        print("mock login success")
-
-    return decorator
+        return login(goto=request.full_path) if token is None or not aut.check_login(token) \
+            else original_function(*args, **kwargs)
+    return wrapper
 
 
 @app.route('/login')
-def login():
-    args = request.args
-    goto = args['goto'] if 'goto' in args else url_for("index")
+def login(goto='/welcome'):
     return render_template('login.html', goto=goto)
 
 
@@ -52,13 +56,16 @@ def index():
 
 
 @app.route('/edit-article/<article_name>')
-def edit_article(article_name: str):
+@app.route('/new-article')
+@require_login
+def edit_article(article_name: str = None):
     """
 
     :param article_name: creating if `article_name` is an empty string,
                         else return an existing article or 404 error.
     :return:
     """
+    return render_template('edit-article.html')
 
 
 if __name__ == '__main__':
