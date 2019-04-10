@@ -12,7 +12,9 @@
 <body>
 <form id="form">
     <label for="password" class="fas fa-user-lock"></label>
-    <input id="password" v-model="password" type="password" name="password" placeholder="Enter password..." autocomplete="new-password">
+    <input id="password" v-model="password" @keyup.enter="test()"
+           type="password" name="password" placeholder="Enter password..."
+           autocomplete="new-password">
     <button type="button" @click="test()" :disabled="password===''">Log in</button>
 
     <!-- These two lines below are headache-->

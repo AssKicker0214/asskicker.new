@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for, jsonify, Response
+from flask import Flask, render_template, request, url_for, jsonify, Response, redirect
 import logics.authentication as aut
 import json
 
@@ -13,16 +13,30 @@ def require_login(original_function):
     :param original_function: the function that would be interrupted
     :return:
     """
+
     def wrapper(*args, **kwargs):
         token = request.cookies.get("token")
-        return login(goto=request.full_path) if token is None or not aut.check_login(token) \
+        # return login(goto=request.full_path) if token is None or not aut.check_login(token) \
+        #     else original_function(*args, **kwargs)
+        return redirect('/login?goto=%s' % request.full_path) \
+            if token is None or not aut.check_login(token) \
             else original_function(*args, **kwargs)
+
     return wrapper
 
 
 @app.route('/login')
 def login(goto='/welcome'):
-    return render_template('login.html', goto=goto)
+    """
+    Forward a login page. This login action act as an interruption before accessing
+    some sensitive information. The original action will be automatically performed
+    if the login is a success.
+    :param goto: the target URL to go, after successfully log into the system
+    :return: login page
+    """
+    args = request.args
+    real_goto = args['goto'] if 'goto' in args else goto
+    return render_template('login.html', goto=real_goto)
 
 
 @app.route('/test-login', methods=['POST'])
