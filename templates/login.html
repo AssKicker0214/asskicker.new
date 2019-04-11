@@ -36,6 +36,7 @@
                 const hashed = md5(this.password);
                 fetch('/test-login', {
                     method: 'POST',
+                    credentials: 'include', // edge won't set cookie without this line
                     headers: {
                         "Content-Type": "application/json",
                         "Data-Type": "application/json"
@@ -44,24 +45,19 @@
                         hashed: hashed
                     })
                 }).then(res => {
+
                     if (res.ok) return res.json();
                 }).then(j => {
-                    if (j['result'] === true) window.location = goto;
-                    else console.log("failure");
-                })
+                    if (j['result'] === true) {
+                        console.log("logged in");
+                        window.location = goto;
+                    } else console.log("failure");
+                });
             }
         }
 
-    })
-
-    document.querySelector("#password").addEventListener('keyup', e => {
-        const evt = e || window.event;
-        if (evt.key === 'Enter') test();
     });
 
-    function test(password) {
-
-    }
 </script>
 </body>
 </html>

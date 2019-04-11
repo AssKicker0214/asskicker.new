@@ -1,23 +1,64 @@
-body{
+body {
     width: 100vw;
     min-height: 100vh;
     background: url("https://area.sinaapp.com/bingImg/");
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
 }
 
-header{
-    width: 100%;
-    background: linear-gradient();
+header {
+    background: linear-gradient(160deg, rgba(39, 39, 46, 0.5), rgba(39, 39, 46, .45), rgba(40, 40, 45, .4), rgba(235, 215, 180, .1), transparent);
+    display: flex;
+    flex-direction: column;
+    min-height: 5em;
+    padding: 2em 0 0 2em;
+    margin: .5em;
+    color: whitesmoke;
 }
-header .header-bg{
-    min-height: 20vh;
-}
-header #title{
-        background: none;
+
+header #title {
+    background: none;
     border: none;
     border-bottom: solid 1px gray;
-    font-size: 2em;
+    font-size: 3em;
+    font-weight: bold;
+    color: whitesmoke;
+    outline: none;
 }
 
-main{
-    width: 100%;
+.tag-list {
+    padding: 0;
+    list-style: none;
+    display: flex;
+}
+
+.tag-list > li {
+    padding: 5px 10px;
+    margin: 0 .2em;
+    border-radius: .5em;
+    border: solid 1px whitesmoke;
+    color: whitesmoke;
+}
+
+main {
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+}
+
+#editor {
+    flex-grow: 1;
+    padding: 5px;
+    background: rgba(39, 39, 46, .95);
+    color: whitesmoke;
+}
+
+#previewer {
+    width: 40%;
+    padding: .5em 2em;
+    background: rgba(235, 215, 180, .95);
+    margin-left: 1em;
 }

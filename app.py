@@ -61,7 +61,7 @@ def hello_world():
 
 @app.route('/welcome')
 def welcome():
-    pass
+    return render_template('index.html')
 
 
 @app.route('/index')
