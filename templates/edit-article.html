@@ -3,11 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ title }}</title>
+    <link rel="stylesheet" href="/static/css/edit-article.css">
     <script src="/static/lib/vue/vue.js"></script>
     <script src="/static/lib/MDEditor/mdeditor.v3.js"></script>
 </head>
 <body>
-
+<header>
+    <div class="header-bg">
+        <input type="text" id="title" title="title">
+    </div>
+</header>
+<main></main>
 <script>
     const title = "{{ title }}";
 </script>

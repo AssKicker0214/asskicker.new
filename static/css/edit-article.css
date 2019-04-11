@@ -1,0 +1,23 @@
+body{
+    width: 100vw;
+    min-height: 100vh;
+    background: url("https://area.sinaapp.com/bingImg/");
+}
+
+header{
+    width: 100%;
+    background: linear-gradient();
+}
+header .header-bg{
+    min-height: 20vh;
+}
+header #title{
+        background: none;
+    border: none;
+    border-bottom: solid 1px gray;
+    font-size: 2em;
+}
+
+main{
+    width: 100%;
+}
