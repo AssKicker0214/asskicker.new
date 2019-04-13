@@ -11,14 +11,78 @@ body {
 header {
     background: linear-gradient(160deg, rgba(39, 39, 46, 0.5), rgba(39, 39, 46, .45), rgba(40, 40, 45, .4), rgba(235, 215, 180, .1), transparent);
     display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: .5s;
+}
+
+header:hover {
+    background: rgba(0, 0, 0, .45);
+}
+
+.header-right {
+    display: flex;
+    flex-direction: column;
+}
+
+.header-right > div {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    margin: 0 2em;
+    color: whitesmoke;
+}
+
+.aside-btn {
+    position: relative;
+    left: 0;
+    outline: none;
+    color: whitesmoke;
+    font-size: 1.6em;
+    padding: 0;
+    width: 2em;
+    height: 2em;
+    text-align: center;
+    border-radius: 1em;
+    box-shadow: 0 0 0.2em rgba(0, 0, 0, .6);
+    transition: .3s;
+    margin: 5px .5em;
+}
+
+.aside-btn:hover {
+    left: -5px;
+    box-shadow: 0 0 0.4em rgba(0, 0, 0, .9);
+    cursor: pointer;
+}
+
+.aside-btn[disabled] {
+    box-shadow: none;
+    cursor: not-allowed;
+    opacity: .8;
+}
+
+#save {
+    border: solid 1px darkgreen;
+    background: #359839;
+}
+
+#public {
+    background-color: #607D8B;
+    border: solid 1px #716a6a;
+}
+
+.header-left {
+    display: flex;
+    flex-grow: 1;
     flex-direction: column;
     min-height: 5em;
     padding: 2em 0 0 2em;
     margin: .5em;
     color: whitesmoke;
+
 }
 
-header #title {
+.header-left #title {
     background: none;
     border: none;
     border-bottom: solid 1px gray;
@@ -28,18 +92,33 @@ header #title {
     outline: none;
 }
 
-.tag-list {
+.keyword-list {
     padding: 0;
     list-style: none;
     display: flex;
 }
 
-.tag-list > li {
+.keyword-list > li {
     padding: 5px 10px;
     margin: 0 .2em;
     border-radius: .5em;
     border: solid 1px whitesmoke;
     color: whitesmoke;
+    display: flex;
+    align-items: center;
+}
+
+#new-keyword {
+    min-width: 2em;
+    margin: 0 .5em;
+    background: none;
+    border: none;
+    outline: none;
+    text-align: center;
+    font: inherit;
+    color: inherit;
+    border-left: solid 1px whitesmoke;
+    padding-left: .5em;
 }
 
 main {

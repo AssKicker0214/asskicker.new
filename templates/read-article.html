@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ html_title }}</title>
+    <link href="/static/lib/font-awesome/all.css" rel="stylesheet">
+
+    {#    <link rel="stylesheet" href="/static/lib/MDEditor/lib/highlightjs/styles/tomorrow-night-eighties.css">#}
+    <link rel="stylesheet" href="/static/css/read-article.css">
+    <link rel="stylesheet" href="/static/lib/MDEditor/md-theme.v3.css">
+    <script src="/static/lib/vue/vue.js"></script>
+    <script src="/static/lib/MDEditor/lib/highlightjs/highlight.pack.js"></script>
+    <script src="/static/lib/MDEditor/mdeditor.v3.js"></script>
+</head>
+<body>
+
+<main>
+    <article id="article"></article>
+</main>
+<script>
+    const AID = Number.isInteger(parseInt("{{ aid }}")) ? parseInt("{{ aid }}") : null;
+
+    function renderArticle(mdCodes) {
+        return dispatch(mdCodes.split('\n'));
+    }
+
+    const contrl = new Vue({
+        el: "main",
+        data: {},
+        methods: {
+            getArticle: function () {
+                fetch(`/get-article?aid=${AID}`, {
+                    method: 'GET',
+                    credentials: 'include',
+                    headers: {
+                        'Data-Type': 'application/json'
+                    }
+                }).then(res => {
+                    if (res.ok) return res.json();
+                    else return new Error('get failed');
+                }).then(j => {
+                    document.querySelector("#article").innerHTML = renderArticle(j['content']);
+                })
+            }
+        },
+        created: function () {
+            this.getArticle();
+        }
+    });
+
+</script>
+</body>
+</html>

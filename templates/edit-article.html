@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{{ title }}</title>
+    <title>{{ html_title }}</title>
+    <link href="/static/lib/font-awesome/all.css" rel="stylesheet">
+
     <link rel="stylesheet" href="/static/lib/MDEditor/lib/highlightjs/styles/tomorrow-night-eighties.css">
     <link rel="stylesheet" href="/static/css/edit-article.css">
     <link rel="stylesheet" href="/static/lib/MDEditor/md-theme.v3.css">
@@ -12,20 +14,92 @@
 </head>
 <body>
 <header>
-    <input id="title" title="title" type="text">
-    <ul class="tag-list">
-        <li>测试</li>
-        <li>Test</li>
-        <li>默认的几个一直在这里</li>
-    </ul>
+    <div class="header-left">
+        <input id="title" title="title" type="text" v-model="d['title']">
+        <ul class="keyword-list">
+            <li v-for="keyword in d['keywords']" v-text="keyword"></li>
+            <li class="add-keyword">
+                <i class="fas fa-plus"></i>
+                <span contenteditable="true" id="new-keyword"
+                      ref="newKeyword"
+                      @keydown.enter="addKeyword($event)"></span>
+            </li>
+        </ul>
+    </div>
+    <aside class="header-right">
+        <div>
+            <button id="save" class="aside-btn" @click="updateArticle()">
+                <i class="fas fa-check"></i>
+            </button>
+            <label v-text="lastSaveTime"></label>
+        </div>
+        <div>
+            <button id="public" class="aside-btn" @click="d.public = !d.public">
+                <i :class="['fas', d.public?'fa-unlock':'fa-lock']"></i>
+            </button>
+            <label v-text="d.public?'公开':'个人'"></label>
+        </div>
+    </aside>
 </header>
 <main>
     <div id="editor"></div>
     <article id="previewer"></article>
 </main>
 <script>
-    const title = "{{ title }}";
-    const editor = new Editor("editor", "previewer", "#", true);
+    const aid = Number.isInteger(parseInt("{{ aid }}")) ? parseInt("{{ aid }}") : null;
+    console.log("#" + aid);
+    const editor = new Editor("editor", "previewer", "/upload-article-img", true);
+    const control = new Vue({
+        el: "header",
+        data: {
+            d: {},
+            lastSaveTime: "保存",
+        },
+        methods: {
+            getArticle: function () {
+                fetch(`/get-article?aid=${aid}`, {
+                    method: 'GET',
+                }).then(res => {
+                    if (res.ok) return res.json();
+                    else return Error(res.statusText)
+                }).then(j => {
+                    this.d = j;
+                    editor.insertText(this.d['content'])
+                }).catch(e => console.error(e))
+            },
+            updateArticle: function () {
+                this.d['content'] = editor.walkThrough().join('\n');
+                fetch(`/update-article`, {
+                    method: 'POST',
+                    headers:{
+                        'Data-Type': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        data: this.d
+                    })
+                }).then(res => {
+                    if (res.ok) return res.json();
+                    else return new Error(res.statusText)
+                }).then(j => {
+                    this.lastSaveTime = "上次保存: " + new Date().toTimeString().split(' ').shift();
+                }).catch(e => console.error(e))
+            },
+            addKeyword: function (evt) {
+                evt.stopPropagation();
+                evt.preventDefault();
+                if (this.$refs.newKeyword.innerText === '') return;
+                let keyword = this.$refs.newKeyword.innerText.trim();
+                if (this.d['keywords'].every(k => k !== keyword)) {
+                    this.d['keywords'].push(keyword);
+                    this.$refs.newKeyword.innerText = '';
+                }
+            }
+        },
+        created: function () {
+            this.getArticle()
+        }
+    });
 </script>
 </body>
 </html>

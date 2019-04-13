@@ -1,6 +1,10 @@
-from flask import Flask, render_template, request, url_for, jsonify, Response, redirect
+from flask import Flask, render_template, request, jsonify, Response, redirect
 import logics.authentication as aut
 import json
+import utils.config as conf
+import re
+from logics.article import Article
+import logics.uploader as uploader
 
 app = Flask(__name__)
 
@@ -15,6 +19,9 @@ def require_login(original_function):
     """
 
     def wrapper(*args, **kwargs):
+        if not conf.security():
+            return original_function(*args, **kwargs)
+
         token = request.cookies.get("token")
         # return login(goto=request.full_path) if token is None or not aut.check_login(token) \
         #     else original_function(*args, **kwargs)
@@ -69,18 +76,57 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/edit-article/<article_name>')
-@app.route('/new-article')
+@app.route('/article/<int:article_id>')
+def article_page(article_id: int):
+    article = Article(aid=article_id)
+    return render_template('read-article.html', **article.get_meta()) \
+        if article.exists else 404
+
+
+@app.route('/editor/<int:article_id>')
+@app.route('/editor/new')
 @require_login
-def edit_article(article_name: str = None):
+def edit_article(article_id: int = None):
     """
 
-    :param article_name: creating if `article_name` is an empty string,
+    :param article_id: create if `article_id` is None,
                         else return an existing article or 404 error.
     :return:
     """
-    return render_template('edit-article.html')
+    article = Article(aid=article_id)
+    return redirect('/editor/new') \
+        if not article.exists and article_id is not None \
+        else render_template('edit-article.html', **article.get_meta())
+
+
+@app.route('/get-article')
+def get_article():
+    args = request.args
+    aid = int(args['aid']) \
+        if 'aid' in args and re.compile(r'\d+').match(args['aid']) \
+        else None
+    article = Article(aid=aid)
+    return Response(json.dumps(article.get(), ensure_ascii=False, indent=2),
+                    mimetype='application/json')
+
+
+@app.route('/update-article', methods=['POST'])
+def update_article():
+    body = request.json
+    data = body['data']
+    article = Article(aid=data['_id'])
+    article.update(data, and_save=True)
+    return jsonify(result=True)
+
+
+@app.route('/upload-article-img', methods=['POST'])
+def upload_article_img():
+    files = request.files.items()
+    urls = []
+    for _, file in files:
+        urls.append(uploader.upload_img(file))
+    return jsonify(result=True, urls=urls)
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=3333, debug=True)
+    app.run(host="0.0.0.0", port=conf.expose_port(), debug=True)
