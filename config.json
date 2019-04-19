@@ -1,0 +1,19 @@
+{
+  "hashed": "545d62c1644cc602917f5dbad8dc348b",
+  "no_security": true,
+  "port": 1234,
+  "db": {
+    "host": "www.asskicker.top",
+    "port": 2345,
+    "article": {
+      "db_name": "top",
+      "collection_name": "articles"
+    }
+  },
+  "upload": {
+    "img": {
+      "dir_root": "./static/upload/media/images/",
+      "url_root": "/static/upload/media/images/"
+    }
+  }
+}

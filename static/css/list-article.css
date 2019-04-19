@@ -1,0 +1,19 @@
+body{
+    margin: 0;
+}
+
+header{
+    min-height: 30vh;
+    position: relative;
+    overflow: hidden;
+}
+
+header>img{
+    position: absolute;
+    /*width: 100%;*/
+    left: -20px;
+    top: -20px;
+    right: -20px;
+    transition: 1s;
+    filter: blur(5px);
+}

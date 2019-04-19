@@ -128,5 +128,10 @@ def upload_article_img():
     return jsonify(result=True, urls=urls)
 
 
+@app.route('/article-list')
+def article_list_page():
+    return render_template('list-article.html')
+
+
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=conf.expose_port(), debug=True)
