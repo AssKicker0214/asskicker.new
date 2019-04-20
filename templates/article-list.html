@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="/static/lib/font-awesome/all.css" rel="stylesheet">
+    <link href="/static/css/list-article.css" rel="stylesheet">
+    <link href="/static/components/article-card.css" rel="stylesheet">
+    <script src="/static/lib/vue/vue.js"></script>
+    <script src="/static/components/article-card.js"></script>
+</head>
+<body>
+<header>
+    <img alt="" src="https://area.sinaapp.com/bingImg/">
+</header>
+<main id="main">
+    <article-card v-for="meta in articleMetas"
+                  :key="meta['aid']"
+                  :aid="meta['aid']"
+                  :title="meta['html_title']"
+                  :create-on="meta['on_create']"
+                  :keywords="meta['keywords']">
+
+    </article-card>
+</main>
+<script>
+    const control = new Vue({
+        el: "#main",
+        data: {
+            articleMetas: []
+        },
+        methods: {
+            listArticles: function () {
+                fetch('list-article', {
+                    method: 'GET'
+                }).then(res => {
+                    if(res.ok)  return res.json();
+                    else return new Error('list failed')
+                }).then(metas => {
+                    this.articleMetas = metas.sort(
+                        (a1, a2) => a2['on_create']-a1['on_create']
+                    );
+                })
+            },
+        },
+        created: function () {
+            this.listArticles();
+        }
+    })
+</script>
+</body>
+</html>

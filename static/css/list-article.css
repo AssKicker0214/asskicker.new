@@ -17,3 +17,8 @@ header>img{
     transition: 1s;
     filter: blur(5px);
 }
+
+#main{
+    display: flex;
+    align-items: stretch;
+}

@@ -1,5 +1,7 @@
-import data.article as db
 import time
+from typing import List
+
+import data.article as db
 
 
 class Article:
@@ -17,16 +19,15 @@ class Article:
     def get(self) -> dict:
         return self._data
 
-    def update(self, d: dict, and_save=True):
+    def update(self, d: dict, and_save=True) -> None:
         assert self._aid == self._data['_id']
         self._data = d
         if and_save:
             self.save()
 
-    def save(self):
+    def save(self) -> None:
         if self._aid is None:
             self._data['_id'] = self._aid = db.next_id()
-        print(self._data)
         db.save(self._data)
 
     def validate(self):
@@ -35,16 +36,20 @@ class Article:
         :return:
         """
 
-    def get_meta(self):
+    def get_meta(self) -> dict:
         return {
+            'aid': self._aid,
             'html_title': self._data['title'] or "创建",
             'keywords_content': ', '.join(self._data['keywords']),
-            'aid': self._aid
+            'keywords': self._data['keywords'],
+            'on_create': self._data['on_create'],
+            'on_update': self._data['on_update']
         }
 
     @staticmethod
     def create_empty() -> dict:
         return {
+            '_id': None,
             "title": None,
             'keywords': [],
             'content': "",
@@ -52,3 +57,10 @@ class Article:
             'on_update': int(time.time()),
             'public': True
         }
+
+    @staticmethod
+    def get_all(public_only=True) -> List['Article']:
+        articles = []
+        for aid in db.find_all(public_only):
+            articles.append(Article(aid=aid))
+        return articles

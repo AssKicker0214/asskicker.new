@@ -1,20 +1,26 @@
 Vue.component('article-card', {
     props: {
         title: String,
-        createOn: String,
+        createOn: Number,
         keywords: Array,
+        aid: Number
     },
     template: `
-<div class="article-card">
+<a class="article-card" :href="'/article/'+aid">
     <header>
-        <h4 v-text="title"><small v-text="createOn"></small></h4> 
+        <span v-text="title"></span> 
+        <small v-text="createTime()"></small>
     </header>
     <ul>
         <li v-for="kw in keywords" v-text="kw"></li>
     </ul>
-</div>
+</a>
     `,
     methods: {
-
+        createTime: function () {
+            const date = new Date(this.createOn * 1000);
+            return `${date.getFullYear()}/${date.getMonth()}/${date.getDate()}`
+            // return this.createOn+'';
+        }
     }
 });

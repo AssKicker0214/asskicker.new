@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+
 import utils.config as conf
 
 client = MongoClient(**conf.db_location())
@@ -25,3 +26,9 @@ def next_id():
     for doc in collection.find({}, {'_id': 1}):
         max_idx = max(doc['_id'], max_idx)
     return max_idx + 1
+
+
+def find_all(public_only: bool):
+    find_filter = {'public': True} if public_only else {}
+    for doc in collection.find(find_filter, {'_id': 1}):
+        yield doc['_id']

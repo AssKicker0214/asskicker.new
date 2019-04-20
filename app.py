@@ -130,7 +130,16 @@ def upload_article_img():
 
 @app.route('/article-list')
 def article_list_page():
-    return render_template('list-article.html')
+    return render_template('article-list.html')
+
+
+@app.route('/list-article')
+def list_article():
+    token = request.cookies.get('token')
+    show_private = aut.check_login(token)
+    articles = Article.get_all(public_only=not show_private)
+    metas = list(map(lambda a: a.get_meta(), articles))
+    return jsonify(metas)
 
 
 if __name__ == '__main__':
