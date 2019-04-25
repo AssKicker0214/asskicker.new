@@ -17,7 +17,11 @@
     <div class="header-left">
         <input id="title" title="title" type="text" v-model="d['title']">
         <ul class="keyword-list">
-            <li v-for="keyword in d['keywords']" v-text="keyword"></li>
+            <li v-for="keyword in d['keywords']"
+                v-text="keyword"
+                @click="removeKeyword(keyword)"
+                class="keyword">
+            </li>
             <li class="add-keyword">
                 <i class="fas fa-plus"></i>
                 <span contenteditable="true" id="new-keyword"
@@ -94,6 +98,9 @@
                     this.d['keywords'].push(keyword);
                     this.$refs.newKeyword.innerText = '';
                 }
+            },
+            removeKeyword: function (keyword) {
+                this.d['keywords'] = this.d['keywords'].filter(kw=>kw !== keyword);
             }
         },
         created: function () {

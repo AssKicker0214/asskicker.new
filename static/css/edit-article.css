@@ -102,10 +102,15 @@ header:hover {
     padding: 5px 10px;
     margin: 0 .2em;
     border-radius: .5em;
-    border: solid 1px whitesmoke;
+    border: solid 1px;
     color: whitesmoke;
     display: flex;
     align-items: center;
+}
+
+.keyword:hover{
+    cursor: pointer;
+    color: red;
 }
 
 #new-keyword {
