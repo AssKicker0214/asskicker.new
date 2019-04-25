@@ -19,11 +19,12 @@ class Article:
     def get(self) -> dict:
         return self._data
 
-    def update(self, d: dict, and_save=True) -> None:
+    def update(self, d: dict, and_save=True) -> int:
         assert self._aid == self._data['_id']
         self._data = d
         if and_save:
             self.save()
+        return self._aid
 
     def save(self) -> None:
         if self._aid is None:

@@ -50,7 +50,7 @@
     <article id="previewer"></article>
 </main>
 <script>
-    const aid = Number.isInteger(parseInt("{{ aid }}")) ? parseInt("{{ aid }}") : null;
+    let aid = Number.isInteger(parseInt("{{ aid }}")) ? parseInt("{{ aid }}") : null;
     console.log("#" + aid);
     const editor = new Editor("editor", "previewer", "/upload-article-img", true);
     const control = new Vue({
@@ -75,7 +75,7 @@
                 this.d['content'] = editor.walkThrough().join('\n');
                 fetch(`/update-article`, {
                     method: 'POST',
-                    headers:{
+                    headers: {
                         'Data-Type': 'application/json',
                         'Content-Type': 'application/json'
                     },
@@ -87,6 +87,7 @@
                     else return new Error(res.statusText)
                 }).then(j => {
                     this.lastSaveTime = "上次保存: " + new Date().toTimeString().split(' ').shift();
+                    aid = j['aid'];
                 }).catch(e => console.error(e))
             },
             addKeyword: function (evt) {
@@ -100,13 +101,17 @@
                 }
             },
             removeKeyword: function (keyword) {
-                this.d['keywords'] = this.d['keywords'].filter(kw=>kw !== keyword);
+                this.d['keywords'] = this.d['keywords'].filter(kw => kw !== keyword);
             }
         },
         created: function () {
             this.getArticle()
         }
     });
+
+    document.addEventListener('keyup', (e)=>{
+        if(e.key === 'S' && e.ctrlKey && e.shiftKey)    control.updateArticle();
+    })
 </script>
 </body>
 </html>

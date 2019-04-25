@@ -115,8 +115,8 @@ def update_article():
     body = request.json
     data = body['data']
     article = Article(aid=data['_id'])
-    article.update(data, and_save=True)
-    return jsonify(result=True)
+    aid = article.update(data, and_save=True)
+    return jsonify(result=True, aid=aid)
 
 
 @app.route('/upload-article-img', methods=['POST'])
