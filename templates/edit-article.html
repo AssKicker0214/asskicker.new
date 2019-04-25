@@ -87,7 +87,10 @@
                     else return new Error(res.statusText)
                 }).then(j => {
                     this.lastSaveTime = "上次保存: " + new Date().toTimeString().split(' ').shift();
-                    aid = j['aid'];
+                    if (this.d['_id'] === null) {
+                        aid = j['aid'];
+                        this.d['_id'] = aid;
+                    }
                 }).catch(e => console.error(e))
             },
             addKeyword: function (evt) {
@@ -109,8 +112,8 @@
         }
     });
 
-    document.addEventListener('keyup', (e)=>{
-        if(e.key === 'S' && e.ctrlKey && e.shiftKey)    control.updateArticle();
+    document.addEventListener('keyup', (e) => {
+        if (e.key === 'S' && e.ctrlKey && e.shiftKey) control.updateArticle();
     })
 </script>
 </body>
