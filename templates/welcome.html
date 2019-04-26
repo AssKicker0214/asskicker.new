@@ -4,10 +4,42 @@
     <meta charset="UTF-8">
     <title>欢迎</title>
     <link href="/static/lib/font-awesome/all.css" rel="stylesheet">
-    <script src="/static/lib/vue/vue.js"></script>
 
+    <script src="/static/lib/vue/vue.js"></script>
+    <link href="/static/components/navigation.css" rel="stylesheet">
+    <script src="/static/components/navigation.js"></script>
 </head>
 <body>
+<div id="nav">
+    <navigation :tabs="tabs" :active-path="[0, null]"></navigation>
 
+</div>
+
+<script>
+    const control = new Vue({
+        el: '#nav',
+        data: {
+            tabs: [
+                {
+                    name: '欢迎',
+                    link: '/welcome'
+                },
+                {
+                    name: '第一页',
+                    link: '#'
+                },
+                {
+                    name: '第二页',
+                    link: '#'
+                },
+                {
+                    name: '第三页',
+                    link: '#'
+                }
+            ]
+        },
+        methods: {}
+    });
+</script>
 </body>
 </html>
