@@ -4,14 +4,16 @@
     <meta charset="UTF-8">
     <title>欢迎</title>
     <link href="/static/lib/font-awesome/all.css" rel="stylesheet">
-
+    <link href="/static/css/welcome.css" rel="stylesheet">
     <script src="/static/lib/vue/vue.js"></script>
     <link href="/static/components/navigation.css" rel="stylesheet">
     <script src="/static/components/navigation.js"></script>
 </head>
 <body>
 <div id="nav">
-    <navigation :tabs="tabs" :active-path="[0, null]"></navigation>
+    <navigation @toggle-nav="toggleNav()" :fold="fold"
+                :tabs="tabs"
+                :active-path="[0, null]"></navigation>
 
 </div>
 
@@ -19,6 +21,7 @@
     const control = new Vue({
         el: '#nav',
         data: {
+            fold: false,
             tabs: [
                 {
                     name: '欢迎',
@@ -38,7 +41,11 @@
                 }
             ]
         },
-        methods: {}
+        methods: {
+            toggleNav: function () {
+                this.fold = !this.fold;
+            }
+        }
     });
 </script>
 </body>
