@@ -8,6 +8,10 @@
     "article": {
       "db_name": "top",
       "collection_name": "articles"
+    },
+    "topic": {
+      "db_name": "top",
+      "collection_name": "topics"
     }
   },
   "upload": {

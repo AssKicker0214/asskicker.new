@@ -1,10 +1,12 @@
-from flask import Flask, render_template, request, jsonify, Response, redirect
-import logics.authentication as aut
 import json
-import utils.config as conf
 import re
-from logics.article import Article
+
+from flask import Flask, render_template, request, jsonify, Response, redirect
+
+import logics.authentication as aut
 import logics.uploader as uploader
+import utils.config as conf
+from logics.article import Article
 
 app = Flask(__name__)
 
@@ -140,6 +142,13 @@ def list_article():
     articles = Article.get_all(public_only=not show_private)
     metas = list(map(lambda a: a.get_meta(), articles))
     return jsonify(metas)
+
+
+# todo The order of `require_login` and `app.route` cannot change, why?
+@require_login
+@app.route('/topic-config')
+def topic_config_page():
+    return render_template('topic_config.html')
 
 
 if __name__ == '__main__':

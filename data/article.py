@@ -1,5 +1,4 @@
 from pymongo import MongoClient
-
 import utils.config as conf
 
 client = MongoClient(**conf.db_location())
