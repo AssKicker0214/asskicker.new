@@ -19,7 +19,7 @@ Vue.component('navigation', {
     
     </div>
     <div class="nav-content">
-        <button class="nav-toggle nav-toggle-collapse fas fa-chevron-circle-left" @click="toggle()"></button>
+        <button class="nav-toggle nav-toggle-collapse fas fa-chevron-left" @click="toggle()"></button>
         <header>
             <img class="nav-portrait" src="/static/assets/portrait.jpg">
             <div>

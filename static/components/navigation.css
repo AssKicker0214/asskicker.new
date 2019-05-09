@@ -10,15 +10,21 @@
     box-shadow: .5em 0 .5em rgba(0,0,0,.5);
 }
 
+.navigation {
+    white-space: nowrap;
+}
+
 .nav-toggle-collapse {
     /*height: auto;*/
     background: transparent;
-    color: #ffcdd2;
+    color: #f5f5f5;
 }
 
 .nav-toggle-expand {
     background-color: #37474F;
     color: white;
+    margin: .5em;
+    box-shadow: 0 0 .3em rgba(0,0,0,.4);
 }
 
 .nav-folder {
@@ -35,6 +41,10 @@
     transition: .3s;
     overflow: hidden;
     outline: none;
+}
+.nav-toggle:hover{
+    cursor: pointer;
+    
 }
 
 .nav-collapse .nav-toggle-collapse {
@@ -68,7 +78,7 @@
     flex-direction: column;
     justify-content: space-between;
     position: relative;
-    transition: 1s;
+    transition: .4s;
     overflow: hidden;
     max-width: 20em;
     width: 20em;
@@ -77,8 +87,8 @@
 }
 
 .nav-collapse .nav-content {
-    max-height: 1em;
-    max-width: 1em;
+    max-height: 0;
+    max-width: 0;
     opacity: 0;
 }
 
