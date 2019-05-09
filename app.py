@@ -25,6 +25,7 @@ def require_login(original_function):
             return original_function(*args, **kwargs)
 
         token = request.cookies.get("token")
+        print('checking token:', token)
         # return login(goto=request.full_path) if token is None or not aut.check_login(token) \
         #     else original_function(*args, **kwargs)
         return redirect('/login?goto=%s' % request.full_path) \
@@ -85,8 +86,8 @@ def article_page(article_id: int):
         if article.exists else 404
 
 
-@app.route('/editor/<int:article_id>')
-@app.route('/editor/new')
+@app.route('/editor/<int:article_id>', endpoint='edit-article')
+@app.route('/editor/new', endpoint='edit-article')
 @require_login
 def edit_article(article_id: int = None):
     """
@@ -145,8 +146,8 @@ def list_article():
 
 
 # todo The order of `require_login` and `app.route` cannot change, why?
+@app.route('/topic-config', endpoint='topic_config_page')
 @require_login
-@app.route('/topic-config')
 def topic_config_page():
     return render_template('topic_config.html')
 
