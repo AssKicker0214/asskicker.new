@@ -33,4 +33,4 @@ def check_login(token: str) -> bool:
     :param token:
     :return:
     """
-    return token is not None and token in control and time.time() < control[token]
+    return not conf.security() or (token is not None and token in control and time.time() < control[token])
