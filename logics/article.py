@@ -56,7 +56,8 @@ class Article:
             'content': "",
             'on_create': int(time.time()),
             'on_update': int(time.time()),
-            'public': True
+            'public': True,
+            'sticky': False
         }
 
     @staticmethod

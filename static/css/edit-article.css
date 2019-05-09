@@ -38,7 +38,7 @@ header:hover {
     left: 0;
     outline: none;
     color: whitesmoke;
-    font-size: 1.6em;
+    font-size: 1.3em;
     padding: 0;
     width: 2em;
     height: 2em;
@@ -69,6 +69,11 @@ header:hover {
 #public {
     background-color: #607D8B;
     border: solid 1px #716a6a;
+}
+
+#stick {
+    border: solid 1px #1565C0;
+    background-color: #1976D2;
 }
 
 .header-left {
